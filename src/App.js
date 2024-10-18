@@ -1,10 +1,11 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import ArtworkList from './components/ArtworkList';
-import ArtworkForm from './components/ArtworkForm';
-import ReviewForm from './components/ReviewForm';
-import UserProfile from './components/UserProfile';
-import Navbar from './components/Navbar';
+import ArtworkList from './componets/ArtworkList';
+import ArtworkForm from './componets/ArtworkForm';
+import ReviewForm from './componets/ReviewForm';
+import UserProfile from './componets/UserProfile';
+import Navbar from './componets/Navbar';
+
 
 function App() {
   return (
