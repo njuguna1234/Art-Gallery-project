@@ -3,6 +3,7 @@ from models import User, Artwork, Review, Purchase
 from datetime import datetime
 from werkzeug.security import generate_password_hash
 
+
 # Drop all tables and recreate them
 with app.app_context():
     db.drop_all()
