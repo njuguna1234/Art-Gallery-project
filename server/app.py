@@ -4,17 +4,15 @@ from flask_migrate import Migrate
 from flask_bcrypt import Bcrypt
 from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
 from datetime import timedelta
-
-# Import models after initializing extensions
 from models import User, Artwork, Review, Purchase
 
 # Initialize Flask app
 app = Flask(__name__)
 
 # Configuration for database and JWT
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///art_gallery.db'  # Or use PostgreSQL in production
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///art_gallery.db' 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['JWT_SECRET_KEY'] = 'super-secret'  # Change this in production
+app.config['JWT_SECRET_KEY'] = 'super-secret'  
 app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(hours=1)
 
 # Initialize extensions
@@ -55,7 +53,8 @@ def login():
     else:
         return jsonify({'error': 'Invalid email or password'}), 401
 
-# Get all artworks
+
+# Artwork CRUD operations
 @app.route('/artworks', methods=['GET'])
 def get_artworks():
     artworks = Artwork.query.all()
@@ -67,7 +66,6 @@ def get_artworks():
         'artist': artwork.artist.name
     } for artwork in artworks]), 200
 
-# Create a new artwork (restricted to artists)
 @app.route('/artworks', methods=['POST'])
 @jwt_required()
 def create_artwork():
