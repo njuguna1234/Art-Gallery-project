@@ -1,74 +1,74 @@
-from flask_sqlalchemy import SQLAlchemy
-from werkzeug.security import generate_password_hash, check_password_hash
+# from flask_sqlalchemy import SQLAlchemy
+# from flask import Flask
+# from sqlalchemy_serializer import SerializerMixin
+# import os
 
-db = SQLAlchemy()
+# basedir = os.path.abspath(os.path.dirname(__file__))
 
-class User(db.Model):
-    __tablename__ = 'users'
+# app = Flask(__name__)
+# app.config['SQLALCHEMY_DATABASE_URI'] =\
+#         'sqlite:///' + os.path.join(basedir, 'database.db')
+# app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+# db = SQLAlchemy(app)
+
+# class User(db.Model, SerializerMixin):
+#     __tablename__ = 'user'
     
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(100), nullable=False)
-    email = db.Column(db.String(100), unique=True, nullable=False)
-    password_hash = db.Column(db.String(128), nullable=False)
-    is_artist = db.Column(db.Boolean, default=False)
+#     id = db.Column(db.Integer, primary_key=True)
+#     name = db.Column(db.String(100), nullable=False)
+#     email = db.Column(db.String(100), unique=True, nullable=False)
+#     password = db.Column(db.String(128), nullable=False)
+#     is_artist = db.Column(db.Boolean, default=False)
+#     artworks = db.relationship('Artwork', backref='artist', lazy=True)
+#     reviews = db.relationship('Review', backref='user', lazy=True)
 
-    # Relationships
-    artworks = db.relationship('Artwork', backref='artist', lazy=True)
-    reviews = db.relationship('Review', backref='user', lazy=True)
-    purchases = db.relationship('Purchase', backref='user', lazy=True)
+#     def __repr__(self) -> str:
+#         return f"{self.name}"
 
-    def __init__(self, name, email, password, is_artist=False):
-        self.name = name
-        self.email = email
-        self.password_hash = generate_password_hash(password)
-        self.is_artist = is_artist
+# class Artwork(db.Model, SerializerMixin):
+#     __tablename__ = 'artwork'
 
-    def check_password(self, password):
-        return check_password_hash(self.password_hash, password)
-
-    def __repr__(self):
-        return f'<User {self.name}>'
-
-class Artwork(db.Model):
-    __tablename__ = 'artworks'
+#     id = db.Column(db.Integer, primary_key=True)
+#     title = db.Column(db.String(200), nullable=False)
+#     description = db.Column(db.Text, nullable=False)
+#     price = db.Column(db.Float, nullable=False)
+#     artist_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+#     reviews = db.relationship('Review', backref='artwork', lazy=True)
     
-    id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(100), nullable=False)
-    description = db.Column(db.Text, nullable=True)
-    price = db.Column(db.Float, nullable=False)
+#     def __repr__(self) -> str:
+#         return f"{self.title}"
+
+# class Review(db.Model, SerializerMixin):
+#     __tablename__ = 'review'
+
+#     id = db.Column(db.Integer, primary_key=True)
+#     content = db.Column(db.Text, nullable=False)
+#     rating = db.Column(db.Integer, nullable=False)
+#     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+#     artwork_id = db.Column(db.Integer, db.ForeignKey('artwork.id'), nullable=False)
     
-    artist_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+#     def __repr__(self) -> str:
+#         return f"{self.content}"
 
-    # Relationships
-    reviews = db.relationship('Review', backref='artwork', lazy=True)
-    purchases = db.relationship('Purchase', backref='artwork', lazy=True)
 
-    def __repr__(self):
-        return f'<Artwork {self.title}, Artist {self.artist.name}>'
 
-class Review(db.Model):
-    __tablename__ = 'reviews'
-    
-    id = db.Column(db.Integer, primary_key=True)
-    content = db.Column(db.Text, nullable=False)
-    rating = db.Column(db.Integer, nullable=False)  # Ensure between 1 and 5
+# from flask_sqlalchemy import SQLAlchemy
+# from sqlalchemy import MetaData
+# from sqlalchemy_serializer import SerializerMixin
 
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
-    artwork_id = db.Column(db.Integer, db.ForeignKey('artworks.id'), nullable=False)
+# metadata = MetaData()
 
-    def __repr__(self):
-        return f'<Review {self.rating} for Artwork {self.artwork.title} by User {self.user.name}>'
+# db = SQLAlchemy(metadata=metadata)
 
-from datetime import datetime
+# # Add models here
+# class Earthquake(db.Model, SerializerMixin):
+#     __tablename__ = 'earthquakes'  # Table name
 
-class Purchase(db.Model):
-    __tablename__ = 'purchases'
-    
-    id = db.Column(db.Integer, primary_key=True)
-    purchase_date = db.Column(db.DateTime, default=datetime)
+#     id = db.Column(db.Integer, primary_key=True)  # Primary key
+#     magnitude = db.Column(db.Float)  # Magnitude of the earthquake
+#     location = db.Column(db.String)  # Location of the earthquake
+#     year = db.Column(db.Integer)  # Year of the earthquake
 
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
-    artwork_id = db.Column(db.Integer, db.ForeignKey('artworks.id'), nullable=False)
-
-    def __repr__(self):
-        return f'<Purchase of Artwork {self.artwork.title} by User {self.user.name} on {self.purchase_date}>'
+#     def __repr__(self):
+#         return f"<Earthquake {self.id}, {self.magnitude}, {self.location}, {self.year}>"
